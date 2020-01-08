@@ -23,13 +23,13 @@ url = 'https://dvmn.org/api/_long_polling/'
 
 TIMEOUT = 120
 MAX_ERROR_COUNT = 5
-DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
+'''DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
 TELEGRAM_TOKEN = os.getenv("DVNM_BOT_TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("DVNM_BOT_CHAT_ID")
 
 headers = {"Authorization":"Token " + DVMN_TOKEN}
 
-bot = telegram.Bot(token = TELEGRAM_TOKEN)
+bot = telegram.Bot(token = TELEGRAM_TOKEN)'''
 
 #logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
 logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s')
@@ -44,7 +44,7 @@ while error_counter < MAX_ERROR_COUNT:
 
   logging.info("MAX_ERROR_COUNT " + str(MAX_ERROR_COUNT))
 
-  MAX_ERROR_COUNT = MAX_ERROR_COUNT + 1
+  error_counter = error_counter + 1
 
   '''if timestamp:
     params = {'timestamp' : str(timestamp)}
