@@ -1,5 +1,9 @@
+
+import logging
+
 print("hello world")
 
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+
+logging.error('test log')
+
