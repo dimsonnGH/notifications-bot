@@ -33,6 +33,8 @@ bot = telegram.Bot(token = TELEGRAM_TOKEN)
 
 logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
 
+logging.info("bot started")
+
 timestamp = 0
 params = {}
 error_counter = 0
