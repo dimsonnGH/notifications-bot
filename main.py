@@ -1,4 +1,6 @@
-import os
+print("hello world")
+
+"""import os
 import requests
 import logging
 import telegram
@@ -19,11 +21,11 @@ base_url = 'https://dvmn.org/api/user_reviews/'
 url = 'https://dvmn.org/api/long_polling/?timestamp=1555411734'
 url = 'https://dvmn.org/api/long_polling/?timestamp=0'
 url = 'https://dvmn.org/api/long_polling/?timestamp=1568388672.314161'
-url = 'https://dvmn.org/api/_long_polling/'
+url = 'https://dvmn.org/api/_long_polling/'"""
 
-TIMEOUT = 120
+'''TIMEOUT = 120
 MAX_ERROR_COUNT = 5
-'''DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
+DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
 TELEGRAM_TOKEN = os.getenv("DVNM_BOT_TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("DVNM_BOT_CHAT_ID")
 
@@ -31,20 +33,20 @@ headers = {"Authorization":"Token " + DVMN_TOKEN}
 
 bot = telegram.Bot(token = TELEGRAM_TOKEN)'''
 
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
 #logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s')
 
-logging.error("bot started")
+'''logging.error("bot started")
 
 timestamp = 0
 params = {}
-error_counter = 0
+error_counter = 0'''
 
-while error_counter < MAX_ERROR_COUNT:
+'''while error_counter < MAX_ERROR_COUNT:
 
   logging.error("error_counter " + str(error_counter))
 
-  error_counter = error_counter + 1
+  error_counter = error_counter + 1'''
 
   '''if timestamp:
     params = {'timestamp' : str(timestamp)}
