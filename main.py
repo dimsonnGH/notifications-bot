@@ -31,7 +31,8 @@ headers = {"Authorization":"Token " + DVMN_TOKEN}
 
 bot = telegram.Bot(token = TELEGRAM_TOKEN)
 
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s')
 
 logging.info("bot started")
 
@@ -41,7 +42,11 @@ error_counter = 0
 
 while error_counter < MAX_ERROR_COUNT:
 
-  if timestamp:
+  logging.info("MAX_ERROR_COUNT " + str(MAX_ERROR_COUNT))
+
+  MAX_ERROR_COUNT = MAX_ERROR_COUNT + 1
+
+  '''if timestamp:
     params = {'timestamp' : str(timestamp)}
 
   try:
@@ -100,7 +105,7 @@ while error_counter < MAX_ERROR_COUNT:
           message_text = 'Преподавателю все понравилось, можно приступать к слеюдующему уроку!'
 
         #bot.send_message(chat_id = CHAT_ID, text = message_text)
-        print(message_text)
+        print(message_text)'''
 
   
   #f = False
