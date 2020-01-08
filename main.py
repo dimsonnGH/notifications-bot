@@ -31,10 +31,10 @@ headers = {"Authorization":"Token " + DVMN_TOKEN}
 
 bot = telegram.Bot(token = TELEGRAM_TOKEN)'''
 
-#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s')
+logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s')
 
-logging.info("bot started")
+logging.error("bot started")
 
 timestamp = 0
 params = {}
@@ -42,7 +42,7 @@ error_counter = 0
 
 while error_counter < MAX_ERROR_COUNT:
 
-  logging.info("MAX_ERROR_COUNT " + str(MAX_ERROR_COUNT))
+  logging.error("error_counter " + str(error_counter))
 
   error_counter = error_counter + 1
 
