@@ -24,6 +24,6 @@ bot = telegram.Bot(token = TELEGRAM_TOKEN)
 
 message_text = 'test heroku'
           
-bot.send_message(chat_id = CHAT_ID, text = message_text)
+#bot.send_message(chat_id = CHAT_ID, text = message_text)
 
 
