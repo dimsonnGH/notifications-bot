@@ -7,10 +7,10 @@ import telegram
 
 print("hello world")
 
-#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log', level=logging.DEBUG)
 logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout)
 
-logging.error('start bot')
+logging.info('start bot')
 
 
 TIMEOUT = 120
