@@ -1,12 +1,14 @@
 
 import os
+import sys
 import requests
 import logging
 import telegram
 
 print("hello world")
 
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
+logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout)
 
 logging.error('start bot')
 
