@@ -8,7 +8,7 @@ import telegram
 print("hello world")
 
 #logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log', level=logging.DEBUG)
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout)
+logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout, level=logging.DEBUG)
 
 logging.info('start bot')
 
