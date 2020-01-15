@@ -24,7 +24,8 @@ headers = {"Authorization":"Token " + DVMN_TOKEN}
 bot = telegram.Bot(token = TELEGRAM_TOKEN)
 
 #logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout)
+logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout, level=logging.INFO)
+logging.info('bot started')
 
 timestamp = 0
 params = {}
