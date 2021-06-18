@@ -1,88 +1,109 @@
-
 import os
 import sys
 import requests
 import logging
 import telegram
+from dotenv import load_dotenv
 
-def print_2_log(message_text, *args):
 
-  global error_counter
-  error_counter += 1
+def print_2_log(message_text, *args) :
+    global error_counter
 
-  logging.error(message_text.format(*args))
+    error_counter += 1
+    logger.error(message_text.format(*args))
 
-TIMEOUT = 120
-MAX_ERROR_COUNT = 5
-DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
-TELEGRAM_TOKEN = os.getenv("DVNM_BOT_TELEGRAM_TOKEN")
-CHAT_ID = os.getenv("DVNM_BOT_CHAT_ID")
 
-url = 'https://dvmn.org/api/long_polling/'
-headers = {"Authorization":"Token " + DVMN_TOKEN}
+class BotLogsHandler(logging.Handler) :
 
-bot = telegram.Bot(token = TELEGRAM_TOKEN)
+    def emit(self, record) :
+        log_entry = self.format(record)
+        bot.send_message(chat_id=CHAT_ID, text=log_entry)
 
-#logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', filename = 'error_log.log')
-logging.basicConfig(format = '%(levelname)-8s [%(asctime)s]  %(message)s', stream = sys.stdout, level=logging.INFO)
-logging.info('bot started')
 
-timestamp = 0
-params = {}
-error_counter = 0
+if __name__ == '__main__' :
+    base_dir = os.path.dirname(__file__)
+    dotenv_path = os.path.join(base_dir, 'env\.env')
+    if os.path.exists(dotenv_path) :
+        load_dotenv(dotenv_path)
+    TIMEOUT = 120
+    MAX_ERROR_COUNT = 5
+    DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
+    TELEGRAM_TOKEN = os.getenv("DVNM_BOT_TELEGRAM_TOKEN")
+    CHAT_ID = os.getenv("DVNM_BOT_CHAT_ID")
 
-while error_counter <= MAX_ERROR_COUNT:
+    url = 'https://dvmn.org/api/long_polling/'
+    headers = {"Authorization" : "Token " + DVMN_TOKEN}
 
-  if timestamp:
-    params = {'timestamp' : str(timestamp)}
-
-  try:
-
-    response = requests.get(url, headers = headers, timeout = TIMEOUT, params = params)
-    response.raise_for_status()
-
-  except requests.exceptions.ReadTimeout:
-
-    print_2_log('Request timeout. URL: {}', response.url)
-
-  except requests.exceptions.ConnectionError:
-
-    print_2_log('Connection error.')
-
-  except requests.exceptions.HTTPError:
-
-    print_2_log('HTTP error. Status code: {}. URL: {}', response.status_code, response.url)
-
-  else:
-
+    timestamp = 0
+    params = {}
     error_counter = 0
 
-    as_json = response.json()
-    if not 'status' in as_json:
-      continue
+    bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
-    response_status = as_json['status']
+    format_log = '%(levelname)-8s [%(asctime)s]  %(message)s'
 
-    if response_status == 'TIMEOUT':
-      
-      timestamp = as_json['timestamp_to_request']
-      continue
+    bot_handler = BotLogsHandler()
+    formatter = logging.Formatter(format_log)
+    bot_handler.setFormatter(formatter)
 
-    if response_status == 'found':
+    logger = logging.getLogger("Бот логер")
+    logger.setLevel(logging.INFO)
+    logger.addHandler(bot_handler)
 
-      timestamp = as_json['last_attempt_timestamp']
+    logger.info('bot started')
 
-      for lesson in as_json['new_attempts']:
+    while error_counter <= MAX_ERROR_COUNT :
 
-        message_text = 'У вас проверили работу «{0}»'.format(lesson['lesson_title'])
-          
-        bot.send_message(chat_id = CHAT_ID, text = message_text)
-        
-        if lesson['is_negative']:
-          message_text = 'К сожалению, в работе нашлись ошибки.'
-        else:
-          message_text = 'Преподавателю все понравилось, можно приступать к слеюдующему уроку!'
+        if timestamp :
+            params = {'timestamp' : str(timestamp)}
 
-        bot.send_message(chat_id = CHAT_ID, text = message_text)
+        try :
 
+            response = requests.get(url, headers=headers, timeout=TIMEOUT, params=params)
+            response.raise_for_status()
 
+        except requests.exceptions.ReadTimeout :
+
+            print_2_log('Request timeout. URL: {}', response.url)
+
+        except requests.exceptions.ConnectionError :
+
+            print_2_log('Connection error.')
+
+        except requests.exceptions.HTTPError :
+
+            print_2_log('HTTP error. Status code: {}. URL: {}', response.status_code, response.url)
+
+        else :
+
+            try :
+                error_counter = 0
+
+                as_json = response.json()
+                if not 'status' in as_json :
+                    continue
+
+                response_status = as_json['status']
+
+                if response_status == 'timeout' :
+                    timestamp = as_json['timestamp_to_request']
+                    continue
+
+                if response_status == 'found' :
+
+                    timestamp = as_json['last_attempt_timestamp']
+
+                    for lesson in as_json['new_attempts'] :
+
+                        message_text = 'У вас проверили работу «{0}»'.format(lesson['lesson_title'])
+
+                        bot.send_message(chat_id=CHAT_ID, text=message_text)
+
+                        if lesson['is_negative'] :
+                            message_text = 'К сожалению, в работе нашлись ошибки.'
+                        else :
+                            message_text = 'Преподавателю все понравилось, можно приступать к слеюдующему уроку!'
+
+                        bot.send_message(chat_id=CHAT_ID, text=message_text)
+            except Exception as expt:
+                print_2_log(str(expt))
