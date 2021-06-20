@@ -32,7 +32,7 @@ if __name__ == '__main__' :
     CHAT_ID = os.getenv("DVNM_BOT_CHAT_ID")
 
     url = 'https://dvmn.org/api/long_polling/'
-    headers = {"Authorization" : "Token " + DVMN_TOKEN}
+    headers = {"Authorization" : f"Token {DVMN_TOKEN}"}
 
     timestamp = 0
     params = {}
