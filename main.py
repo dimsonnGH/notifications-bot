@@ -79,21 +79,21 @@ if __name__ == '__main__' :
             try :
                 error_counter = 0
 
-                as_json = response.json()
-                if not 'status' in as_json :
+                parsed_response = response.json()
+                if not 'status' in parsed_response :
                     continue
 
-                response_status = as_json['status']
+                response_status = parsed_response['status']
 
                 if response_status == 'timeout' :
-                    timestamp = as_json['timestamp_to_request']
+                    timestamp = parsed_response['timestamp_to_request']
                     continue
 
                 if response_status == 'found' :
 
-                    timestamp = as_json['last_attempt_timestamp']
+                    timestamp = parsed_response['last_attempt_timestamp']
 
-                    for lesson in as_json['new_attempts'] :
+                    for lesson in parsed_response['new_attempts'] :
 
                         message_text = 'У вас проверили работу «{0}»'.format(lesson['lesson_title'])
 
