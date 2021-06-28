@@ -23,8 +23,7 @@ class BotLogsHandler(logging.Handler) :
 if __name__ == '__main__' :
     base_dir = os.path.dirname(__file__)
     dotenv_path = os.path.join(base_dir, 'env\.env')
-    if os.path.exists(dotenv_path) :
-        load_dotenv(dotenv_path)
+    load_dotenv(dotenv_path)
     TIMEOUT = 120
     MAX_ERROR_COUNT = 5
     DVMN_TOKEN = os.getenv("DVNM_BOT_DVMN_TOKEN")
