@@ -6,6 +6,9 @@ import telegram
 from dotenv import load_dotenv
 
 
+logger = logging.getLogger("Бот логер")
+
+
 def print_2_log(message_text, *args) :
     global error_counter
 
@@ -45,7 +48,6 @@ if __name__ == '__main__' :
     formatter = logging.Formatter(format_log)
     bot_handler.setFormatter(formatter)
 
-    logger = logging.getLogger("Бот логер")
     logger.setLevel(logging.INFO)
     logger.addHandler(bot_handler)
 
