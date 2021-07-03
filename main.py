@@ -6,10 +6,6 @@ import telegram
 import time
 from dotenv import load_dotenv
 
-'''This commit should be divided into the following:
-Add delay if connection error occured.
-Add bot and chat id in log handler.
-Remove excess procedure print_2_log.'''
 
 logger = logging.getLogger("Бот логер")
 
