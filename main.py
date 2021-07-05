@@ -6,7 +6,6 @@ import telegram
 import time
 from dotenv import load_dotenv
 
-
 logger = logging.getLogger("Бот логер")
 
 
@@ -74,34 +73,30 @@ if __name__ == '__main__':
 
             logger.error('HTTP error. Status code: {}. URL: {}'.format(response.status_code, response.url))
 
-        else:
+        try:
+            parsed_response = response.json()
 
-            try:
-                parsed_response = response.json()
-                if not 'status' in parsed_response:
-                    continue
+            response_status = parsed_response['status']
 
-                response_status = parsed_response['status']
+            if response_status == 'timeout':
+                timestamp = parsed_response['timestamp_to_request']
 
-                if response_status == 'timeout':
-                    timestamp = parsed_response['timestamp_to_request']
-                    continue
+            if response_status == 'found':
 
-                if response_status == 'found':
+                timestamp = parsed_response['last_attempt_timestamp']
 
-                    timestamp = parsed_response['last_attempt_timestamp']
+                for lesson in parsed_response['new_attempts']:
 
-                    for lesson in parsed_response['new_attempts']:
+                    message_text = 'У вас проверили работу «{0}»'.format(lesson['lesson_title'])
 
-                        message_text = 'У вас проверили работу «{0}»'.format(lesson['lesson_title'])
+                    bot.send_message(chat_id=CHAT_ID, text=message_text)
 
-                        bot.send_message(chat_id=CHAT_ID, text=message_text)
+                    if lesson['is_negative']:
+                        message_text = 'К сожалению, в работе нашлись ошибки.'
+                    else:
+                        message_text = 'Преподавателю все понравилось, можно приступать к слеюдующему уроку!'
 
-                        if lesson['is_negative']:
-                            message_text = 'К сожалению, в работе нашлись ошибки.'
-                        else:
-                            message_text = 'Преподавателю все понравилось, можно приступать к слеюдующему уроку!'
+                    bot.send_message(chat_id=CHAT_ID, text=message_text)
 
-                        bot.send_message(chat_id=CHAT_ID, text=message_text)
-            except Exception as expt:
-                logger.exception('Бот сломался')
+        except Exception as expt:
+            logger.exception('Бот сломался')
